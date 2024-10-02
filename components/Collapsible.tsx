@@ -1,17 +1,23 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { PropsWithChildren, useState } from 'react';
-import { StyleSheet, TouchableOpacity, useColorScheme } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, useColorScheme, ViewStyle  } from 'react-native';
 
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { Colors } from '@/constants/Colors';
 
-export function Collapsible({ children, title }: PropsWithChildren & { title: string }) {
+interface CollapsibleProps extends PropsWithChildren {
+  title: string;
+  style?: ViewStyle;  // Menambahkan properti style opsional
+  contentStyle?: ViewStyle; // Menambahkan properti style opsional untuk konten collapsible
+}
+
+export function Collapsible({ children, title, style, contentStyle }: CollapsibleProps) {
   const [isOpen, setIsOpen] = useState(false);
   const theme = useColorScheme() ?? 'light';
 
   return (
-    <ThemedView>
+    <ThemedView style={style}> {/* Menggunakan style yang diterima sebagai prop */}
       <TouchableOpacity
         style={styles.heading}
         onPress={() => setIsOpen((value) => !value)}
@@ -21,9 +27,13 @@ export function Collapsible({ children, title }: PropsWithChildren & { title: st
           size={18}
           color={theme === 'light' ? Colors.light.icon : Colors.dark.icon}
         />
-        <ThemedText type="defaultSemiBold">{title}</ThemedText>
+        <Text style={styles.textTitle}>{title}</Text>
       </TouchableOpacity>
-      {isOpen && <ThemedView style={styles.content}>{children}</ThemedView>}
+      {isOpen && (
+        <ThemedView style={[styles.content, contentStyle]}> {/* Menambahkan style untuk konten collapsible */}
+          {children}
+        </ThemedView>
+      )}
     </ThemedView>
   );
 }
@@ -38,4 +48,9 @@ const styles = StyleSheet.create({
     marginTop: 6,
     marginLeft: 24,
   },
+  textTitle:{
+    color:'#6C48C5',
+    fontSize:18,
+    fontWeight:'bold'
+  }
 });
