@@ -9,7 +9,7 @@ import { collection, addDoc } from 'firebase/firestore';
 import * as Device from 'expo-device';
 import { FIRESTORE_DB } from '../FirebaseConfig'
 
-const Add = () => {
+export default function Add (){
   const navigation = useNavigation();
   const windowWidth = Dimensions.get('window').width;
   const windowHeight = Dimensions.get('window').height;
@@ -58,7 +58,7 @@ const Add = () => {
   );
 };
 
-export default Add
+
 
 const styles = StyleSheet.create({
     container:{
